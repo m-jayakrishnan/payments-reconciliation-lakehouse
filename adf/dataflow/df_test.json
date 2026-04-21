@@ -1,0 +1,77 @@
+{
+	"name": "df_test",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_processed_db",
+						"type": "DatasetReference"
+					},
+					"name": "cbssource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "filterRows"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          txn_id as string,",
+				"          biller_id as string,",
+				"          Customer_name as string,",
+				"          amount as double,",
+				"          status as string,",
+				"          source as string,",
+				"          txn_time as timestamp,",
+				"          ingestion_date as timestamp,",
+				"          year as integer,",
+				"          month as integer,",
+				"          day as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet',",
+				"     partitionBy('roundRobin', 2)) ~> cbssource",
+				"cbssource filter(status == 'Success') ~> filterRows",
+				"filterRows select(mapColumn(",
+				"          txn_id,",
+				"          biller_id,",
+				"          Customer_name,",
+				"          amount,",
+				"          status,",
+				"          source,",
+				"          txn_time",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}
