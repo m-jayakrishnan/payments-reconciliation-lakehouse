@@ -1,10 +1,10 @@
 # Payments Reconciliation Lakehouse
 
 ## Recon data flow
-![Flow](docs/images/recon data flow.png)
+![Flow](docs/images/recon_dataflow.png)
 
 ## Source System ERD
-![Source ERD](docs/images/source erd.png)
+![Source ERD](docs/images/source_erd.png)
 
 ## Data Warehouse ERD
-![Gold ERD](docs/images/dw erd.png)
+![Gold ERD](docs/images/dw_erd.png)
