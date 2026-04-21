@@ -1,0 +1,69 @@
+{
+	"name": "ds_processed_db",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "BBPS_project"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "db",
+				"fileSystem": "processed"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "txn_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "biller_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "Customer_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "amount",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "status",
+				"type": "UTF8"
+			},
+			{
+				"name": "source",
+				"type": "UTF8"
+			},
+			{
+				"name": "txn_time",
+				"type": "INT96"
+			},
+			{
+				"name": "ingestion_date",
+				"type": "INT96"
+			},
+			{
+				"name": "year",
+				"type": "INT32"
+			},
+			{
+				"name": "month",
+				"type": "INT32"
+			},
+			{
+				"name": "day",
+				"type": "INT32"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

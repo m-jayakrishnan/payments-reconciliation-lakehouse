@@ -1,0 +1,100 @@
+{
+	"name": "pl_incre_DB_copy",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup_json",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_lookup_json",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach_copy",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup_json",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup_json').output.value",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "Execute incre",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_incremental_DB",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": false,
+								"parameters": {
+									"tablename": {
+										"value": "@item().tablename",
+										"type": "Expression"
+									},
+									"watermark": {
+										"value": "@item().watermarkcolumn",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"json": {
+				"type": "String"
+			},
+			"filename": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "test_project"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-04-21T08:53:35Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,20 @@
+{
+	"name": "ds_watermark",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_bbps_dw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "BBPS_project"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "incre",
+			"table": "watermark"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
