@@ -1,9 +1,0 @@
-{
-	"name": "banking-adf-dev",
-	"location": "centralindia",
-	"identity": {
-		"type": "SystemAssigned",
-		"principalId": "78ea5414-b6e1-44c4-a6f5-878937d9153c",
-		"tenantId": "9ee4a0c8-2376-4939-aeb6-89356a6ac62e"
-	}
-}
